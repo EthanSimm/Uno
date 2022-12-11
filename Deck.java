@@ -5,6 +5,7 @@ public class Deck {
     private ArrayList<Card> cards;
 
     // Constructors
+
     /**
      * Constructor to create a standard shuffled deck.
      */
@@ -15,6 +16,7 @@ public class Deck {
 
     /**
      * Constructor to create an empty or custom deck.
+     *
      * @param cards cards that are going to start in the deck.
      */
     public Deck(ArrayList<Card> cards) {
@@ -25,8 +27,10 @@ public class Deck {
     // Getters and setters
 
     // Methods
+
     /**
      * Draws the top card from the deck and returns it, effectively removing the card from the deck.
+     *
      * @return the top card from the deck.
      */
     public Card drawCard() {
@@ -50,6 +54,7 @@ public class Deck {
 
     /**
      * Creates a brand-new Uno deck with all 108 cards.
+     *
      * @return a new full Uno deck.
      */
     private ArrayList<Card> createDeck() {
