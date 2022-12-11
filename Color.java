@@ -4,6 +4,6 @@ public enum Color {
     public static Color[] colors = Color.values();
 
     public static Color getColor(int id) {
-        return Color.colors[id];
+        return colors[id];
     }
 }
