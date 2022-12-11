@@ -29,4 +29,7 @@ public class Card implements Serializable {
     }
 
     // Methods
+    public String toString() {
+        return color.toString() + " " + value.toString();
+    }
 }
