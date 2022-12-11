@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class Player {
     // Fields
@@ -22,6 +22,15 @@ public class Player {
      */
     public void addCardToHand(Card card) {
         hand.add(card);
+    }
+
+    /**
+     * Plays the selected card to the game, removing it from the player's hand.
+     * @param card the card being played.
+     */
+    public Card playCard(Card card) {
+        hand.remove(card);
+        return card;
     }
 
     /**
