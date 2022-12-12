@@ -1,12 +1,22 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class Player {
+public class Player implements Serializable {
     // Fields
+    private String username;
     private ArrayList<Card> hand;
 
     // Constructors
 
     // Getters and setters
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public ArrayList<Card> getHand() {
         return hand;
     }

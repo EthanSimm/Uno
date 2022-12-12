@@ -13,7 +13,6 @@ public class Game {
     // Getters and setters
 
     // Methods
-
     /**
      * Method that occurs when a player selects a card to play.
      * The card is checked to see if it is a valid play and makes it the center card.
@@ -69,7 +68,7 @@ public class Game {
      * @param card the card being played.
      * @return true if it is valid, false if it is invalid.
      */
-    public boolean isValidPlay(Card card) {
+    private boolean isValidPlay(Card card) {
         return (card.getColor() == Color.WILD || centerCard.getColor() == card.getColor() ||
                 centerCard.getValue() == card.getValue());
     }
