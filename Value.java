@@ -6,4 +6,13 @@ public enum Value {
     public static Value getValue(int id) {
         return values[id];
     }
+
+    public static int getValueIndex(Value value) {
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] == value) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

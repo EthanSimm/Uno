@@ -25,9 +25,15 @@ public class Deck {
 
 
     // Getters and setters
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(ArrayList<Card> cards) {
+        this.cards = cards;
+    }
 
     // Methods
-
     /**
      * Draws the top card from the deck and returns it, effectively removing the card from the deck.
      *
