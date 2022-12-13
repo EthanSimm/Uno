@@ -11,18 +11,38 @@ public class Game {
 
     // Constructors
 
+    /**
+     * Standard constructor to begin a new game.
+     *
+     * @param players the players participating in the game.
+     */
+    public Game(Player[] players) throws InvalidGameSizeException {
+        if (players.length <= 1) {
+            throw new InvalidGameSizeException();
+        }
 
-    public Game(Player[] players) {
         this.players = players;
         drawPile = new Deck();
-        determineTurnOrder();
+        dealBeginningHands();
         centerCard = drawPile.drawCard();
+        int dealerIndex = decideDealer();
+        dealer = players[dealerIndex];
+        turnOrder = determineTurnOrder(dealerIndex);
         turnOrderDirection = TurnDirection.CLOCKWISE;
+
     }
 
     // Getters and setters
+    public Card getCenterCard() {
+        return centerCard;
+    }
+
+    public Player getCurrentPlayer() {
+        return turnOrder.peek();
+    }
 
     // Methods
+
     /**
      * Method that occurs when a player selects a card to play.
      * The card is checked to see if it is a valid play and makes it the center card.
@@ -50,30 +70,34 @@ public class Game {
     }
 
     /**
-     * Determine the turn order by calling the decideDealer method which determines the dealer as well.
+     * Determines the turn order to start the game based on the dealer.
+     *
+     * @param dealerIndex index of the dealer in the players array.
+     * @return LinkedList of the turn order. The player at the head goes first.
      */
-    public void determineTurnOrder() {
-        int dealerIndex = decideDealer();
+    public LinkedList<Player> determineTurnOrder(int dealerIndex) {
+        LinkedList<Player> temp = new LinkedList<>();
 
         // Pushing the players onto the LinkedList so that the turn order occurs in a clockwise fashion
         for (int i = dealerIndex; i < players.length; i++) {
-            turnOrder.push(players[i]);
+            temp.push(players[i]);
         }
 
         // Making sure the dealer isn't the first person in the array to prevent an out-of-bounds error
-        if (dealerIndex == 0) return;
-        for (int i = (dealerIndex - 1); i >= 0; i--) {
-            turnOrder.push(players[i]);
+        if (dealerIndex != 0) {
+            for (int i = (dealerIndex - 1); i >= 0; i--) {
+                temp.push(players[i]);
+            }
         }
+        return temp;
     }
 
     /**
      * Advances the player turn order.
      *
      * @param skipped Checks if the player before played a skip card.
-     * @return the player whose turn it is after the advance.
      */
-    public Player advanceTurnOrder(boolean skipped) {
+    public void advanceTurnOrder(boolean skipped) {
         if (turnOrderDirection == TurnDirection.CLOCKWISE) {
             turnOrder.addLast(turnOrder.pop());
             // Advances twice if the player was skipped
@@ -87,40 +111,40 @@ public class Game {
                 turnOrder.push(turnOrder.pollLast());
             }
         }
-        return turnOrder.peek();
     }
 
     /**
-     * Decides the dealer for the round by standard Uno convention.
+     * Checks if the game is over by seeing if any player has an empty hand.
      *
-     * @return the array index of the dealer
+     * @return the Player who won the game. Null if nobody has won.
      */
-    private int decideDealer() {
-        Card[] cardPerPlayer = new Card[players.length];
-        Value highestValue = Value.ZERO;
-        int highestCardIndex = -1;
-
-        // Giving everyone a card. Whoever has the highest card value is the dealer
-        for (int i = 0; i < cardPerPlayer.length; i++) {
-            int cardIndexValue;
-            // Drawing cards until the card has a number value
-            do {
-                // Drawing a card and immediately putting it back into the drawPile to maintain 108 cards
-                cardPerPlayer[i] = drawPile.drawCard();
-                drawPile.getCards().add(cardPerPlayer[i]);
-                cardIndexValue = Value.getValueIndex(cardPerPlayer[i].getValue());
-            } while (cardIndexValue > 9);
-
-            // Comparing the value to the current highest value to see if it is higher
-            if (cardIndexValue > Value.getValueIndex(highestValue)) {
-                highestValue = cardPerPlayer[i].getValue();
-                highestCardIndex = i;
+    public Player gameOver() {
+        for (Player p : players) {
+            if (p.hasEmptyHand()) {
+                return p;
             }
         }
-        // Reshuffling the deck to knowing what cards are at the bottom and setting the dealer
-        drawPile.shuffleDeck();
-        dealer = players[highestCardIndex];
-        return highestCardIndex;
+        return null;
+    }
+
+    /**
+     * Deals the beginning 7 cards to each player in the game.
+     */
+    private void dealBeginningHands() {
+        for (int i = 0; i < 7; i++) {
+            for (Player p : players) {
+                p.getHand().add(drawPile.drawCard());
+            }
+        }
+    }
+
+    /**
+     * Decides the dealer for the round by returning a random index value from the players array.
+     *
+     * @return the array index of the dealer.
+     */
+    private int decideDealer() {
+        return (int) (Math.random() * players.length);
     }
 
     /**

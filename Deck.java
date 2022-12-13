@@ -23,7 +23,6 @@ public class Deck {
         this.cards = cards;
     }
 
-
     // Getters and setters
     public ArrayList<Card> getCards() {
         return cards;
@@ -34,6 +33,7 @@ public class Deck {
     }
 
     // Methods
+
     /**
      * Draws the top card from the deck and returns it, effectively removing the card from the deck.
      *

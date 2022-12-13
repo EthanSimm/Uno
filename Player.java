@@ -10,6 +10,7 @@ public class Player implements Serializable {
     // Creating a brand-new player
     public Player(String username) {
         this.username = username;
+        hand = new ArrayList<>();
     }
 
     // Getters and setters
