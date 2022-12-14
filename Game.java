@@ -2,25 +2,23 @@ import java.util.*;
 
 public class Game {
     // Fields
-    private Player[] players;
+    private ArrayList<Player> players;
     private Deck drawPile;
     private Card centerCard;
     private Player dealer;
     private LinkedList<Player> turnOrder;
     private TurnDirection turnOrderDirection;
+    private GameStatus status;
 
     // Constructors
 
-    /**
-     * Standard constructor to begin a new game.
-     *
-     * @param players the players participating in the game.
-     */
-    public Game(Player[] players) throws InvalidGameSizeException {
+    // ** Need to rewrite constructor so that it creates a game instance but doesn't start anything till
+    // Someone decides to beginning the game with the players currently in it. Changing the game status to ONGOING.
+
+    /*public Game(Player[] players) throws InvalidGameSizeException {
         if (players.length <= 1) {
             throw new InvalidGameSizeException();
         }
-
         this.players = players;
         drawPile = new Deck();
         dealBeginningHands();
@@ -29,8 +27,8 @@ public class Game {
         dealer = players[dealerIndex];
         turnOrder = determineTurnOrder(dealerIndex);
         turnOrderDirection = TurnDirection.CLOCKWISE;
-
-    }
+        status = GameStatus.BEGINNING;
+    }*/
 
     // Getters and setters
     public Card getCenterCard() {
@@ -39,6 +37,14 @@ public class Game {
 
     public Player getCurrentPlayer() {
         return turnOrder.peek();
+    }
+
+    public GameStatus getStatus() {
+        return status;
+    }
+
+    public void setGameStatus(GameStatus status) {
+        this.status = status;
     }
 
     // Methods
@@ -79,14 +85,14 @@ public class Game {
         LinkedList<Player> temp = new LinkedList<>();
 
         // Pushing the players onto the LinkedList so that the turn order occurs in a clockwise fashion
-        for (int i = dealerIndex; i < players.length; i++) {
-            temp.push(players[i]);
+        for (int i = dealerIndex; i < players.size(); i++) {
+            temp.push(players.get(i));
         }
 
         // Making sure the dealer isn't the first person in the array to prevent an out-of-bounds error
         if (dealerIndex != 0) {
             for (int i = (dealerIndex - 1); i >= 0; i--) {
-                temp.push(players[i]);
+                temp.push(players.get(i));
             }
         }
         return temp;
@@ -144,7 +150,7 @@ public class Game {
      * @return the array index of the dealer.
      */
     private int decideDealer() {
-        return (int) (Math.random() * players.length);
+        return (int) (Math.random() * players.size());
     }
 
     /**

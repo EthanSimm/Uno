@@ -1,0 +1,3 @@
+public enum GameStatus {
+    BEGINNING, ONGOING, COMPLETED, WAITING, TERMINATED
+}
